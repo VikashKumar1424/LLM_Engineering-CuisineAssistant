@@ -1,15 +1,32 @@
-# LLM Engineering - Cuisine Assistant
 
-A comprehensive LLM engineering project demonstrating advanced AI application development with specialized focus on authentic Bihari cuisine.
+## 🍲 MyTaste: Bihari Cuisine Assistant
 
----
+### Overview
+MyTaste is an LLM-powered interactive application that serves as a specialized assistant for authentic Bihari cuisine. It combines Google's Gemini AI with a SQLite database and Gradio UI to provide an engaging culinary experience.
 
-## 📋 Project Overview
+### 🎯 Key Features
 
-This repository showcases LLM (Large Language Model) engineering practices and contains practical applications built with modern AI frameworks. The main focus is on **MyTaste**, an intelligent Bihari cuisine assistant.
+1. **AI-Powered Chat Interface**
+   - Leverages Google Gemini 3.6 Flash LLM (via OpenAI-compatible API)
+   - Specialized system prompt focused exclusively on Bihari cuisine
+   - Maintains conversation history for contextual responses
+   - Politely redirects non-Bihari food queries
 
----
+2. **Database Integration**
+   - SQLite database (`food.db`) storing authentic Bihari dishes
+   - Structured data includes: dish name, description, ingredients, preparation methods, and regional information
+   - Function calling mechanism for LLM to query food details
 
+3. **Interactive Web UI**
+   - Built with Gradio for user-friendly chatbot interface
+   - Local deployment on `http://127.0.0.1:7860`
+   - Real-time chat with the Bihari cuisine assistant
+
+4. **LLM Function Calling**
+   - Implements OpenAI-compatible tool calling
+   - `get_bihari_food_details()` function allows the LLM to retrieve specific dish information
+   - Enables context-aware responses with accurate data
+  
 ## 🏗️ Project Architecture
 
 ### High-Level Architecture Diagram
@@ -56,6 +73,104 @@ This repository showcases LLM (Large Language Model) engineering practices and c
                     │ (with API Key Auth)      │
                     └──────────────────────────┘
 ```
+### Execution Flow Sequence Diagram
+
+```
+User
+  │
+  ├─> Types message in Gradio UI
+  │
+  ▼
+┌────────────────────────────┐
+│  Gradio Interface          │
+│  - Captures user input     │
+│  - Displays conversation   │
+└────────────┬───────────────┘
+             │
+             ▼
+┌────────────────────────────┐
+│  Chat Handler              │
+│  - Prepares message        │
+│  - Loads conversation hist │
+└────────────┬───────────────┘
+             │
+             ▼
+┌────────────────────────────┐
+│  System Setup              │
+│  - System prompt injected  │
+│  - Function tools loaded   │
+│  - Context prepared        │
+└────────────┬───────────────┘
+             │
+             ▼
+┌────────────────────────────┐
+│  Google Gemini API Call    │
+│  - Message + history sent  │
+│  - System prompt included  │
+└────────────┬───────────────┘
+             │
+             ▼ (Decision Tree)
+        ┌────┴────┐
+        │          │
+    Uses Data   No Data Needed
+        │          │
+        ▼          │
+┌─────────────┐    │
+│  Function   │    │
+│  Calling    │    │
+│  get_bihari_│    │
+│  food_      │    │
+│  details()  │    │
+└────┬────────┘    │
+     │             │
+     ▼             │
+┌──────────────┐   │
+│  Query SQLite│   │
+│  Database    │   │
+└────┬─────────┘   │
+     │             │
+     ▼             │
+┌──────────────┐   │
+│  Return Food │   │
+│  Details     │   │
+└────┬─────────┘   │
+     │             │
+     └──────┬──────┘
+            │
+            ▼
+┌────────────────────────────┐
+│  LLM Response Generation   │
+│  (with or without data)    │
+└────────────┬───────────────┘
+             │
+             ▼
+┌────────────────────────────┐
+│  Response Formatting       │
+│  - Parse response          │
+│  - Add to history          │
+└────────────┬───────────────┘
+             │
+             ▼
+┌��───────────────────────────┐
+│  Display in Gradio          │
+│  - Show assistant response  │
+└────────────┬─────────────── ┘
+             │
+             ▼
+           User sees answer
+```
+
+### Interaction Matrix
+
+| Component | Interacts With | Method | Purpose |
+|-----------|---|---|---|
+| Gradio UI | Chat Handler | Function calls | I/O handling |
+| Chat Handler | LLM Layer | API calls | Message processing |
+| Chat Handler | Database Layer | Function calling | Data retrieval |
+| LLM Layer | Google Gemini | REST API | LLM inference |
+| Database Layer | SQLite DB | SQL queries | Data operations |
+| Config | .env file | Environment vars | Authentication |
+
 
 ### Component Architecture
 
@@ -159,156 +274,6 @@ This repository showcases LLM (Large Language Model) engineering practices and c
 │ Base URL: generativelanguage.googleapis  │
 └──────────────────────────────────────────┘
 ```
-
-### File Organization Architecture
-
-```
-LLM_Engineering-CuisineAssistant/
-│
-├── CuisineAssitant/                    # Main project directory
-│   └── MyTaste/                        # Bihari Cuisine Assistant
-│       ├── Cuisine/
-│       │   ├── Taste.ipynb            # Main implementation notebook
-│       │   └── food.db                # SQLite database
-│       ├── src/
-│       │   └── mytaste/
-│       │       └── __init__.py        # Package initialization
-│       ├── pyproject.toml             # Project metadata & deps
-│       ├── uv.lock                    # Locked dependencies
-│       └── README.md                  # Sub-project documentation
-│
-├── .env                               # Environment variables
-├── README.md                          # Main documentation
-└── .gitignore                         # Git configuration
-```
-
-### Execution Flow Sequence Diagram
-
-```
-User
-  │
-  ├─> Types message in Gradio UI
-  │
-  ▼
-┌────────────────────────────┐
-│  Gradio Interface          │
-│  - Captures user input     │
-│  - Displays conversation   │
-└────────────┬───────────────┘
-             │
-             ▼
-┌────────────────────────────┐
-│  Chat Handler              │
-│  - Prepares message        │
-│  - Loads conversation hist │
-└────────────┬───────────────┘
-             │
-             ▼
-┌────────────────────────────┐
-│  System Setup              │
-│  - System prompt injected  │
-│  - Function tools loaded   │
-│  - Context prepared        │
-└────────────┬───────────────┘
-             │
-             ▼
-┌────────────────────────────┐
-│  Google Gemini API Call    │
-│  - Message + history sent  │
-│  - System prompt included  │
-└────────────┬───────────────┘
-             │
-             ▼ (Decision Tree)
-        ┌────┴────┐
-        │          │
-    Uses Data   No Data Needed
-        │          │
-        ▼          │
-┌─────────────┐    │
-│  Function   │    │
-│  Calling    │    │
-│  get_bihari_│    │
-│  food_      │    │
-│  details()  │    │
-└────┬────────┘    │
-     │             │
-     ▼             │
-┌──────────────┐   │
-│  Query SQLite│   │
-│  Database    │   │
-└────┬─────────┘   │
-     │             │
-     ▼             │
-┌──────────────┐   │
-│  Return Food │   │
-│  Details     │   │
-└────┬─────────┘   │
-     │             │
-     └──────┬──────┘
-            │
-            ▼
-┌────────────────────────────┐
-│  LLM Response Generation   │
-│  (with or without data)    │
-└────────────┬───────────────┘
-             │
-             ▼
-┌────────────────────────────┐
-│  Response Formatting       │
-│  - Parse response          │
-│  - Add to history          │
-└────────────┬───────────────┘
-             │
-             ▼
-┌��───────────────────────────┐
-│  Display in Gradio         │
-│  - Show assistant response │
-└────────────┬───────────────┘
-             │
-             ▼
-           User sees answer
-```
-
-### Interaction Matrix
-
-| Component | Interacts With | Method | Purpose |
-|-----------|---|---|---|
-| Gradio UI | Chat Handler | Function calls | I/O handling |
-| Chat Handler | LLM Layer | API calls | Message processing |
-| Chat Handler | Database Layer | Function calling | Data retrieval |
-| LLM Layer | Google Gemini | REST API | LLM inference |
-| Database Layer | SQLite DB | SQL queries | Data operations |
-| Config | .env file | Environment vars | Authentication |
-
----
-
-## 🍲 MyTaste: Bihari Cuisine Assistant
-
-### Overview
-MyTaste is an LLM-powered interactive application that serves as a specialized assistant for authentic Bihari cuisine. It combines Google's Gemini AI with a SQLite database and Gradio UI to provide an engaging culinary experience.
-
-### 🎯 Key Features
-
-1. **AI-Powered Chat Interface**
-   - Leverages Google Gemini 3.6 Flash LLM (via OpenAI-compatible API)
-   - Specialized system prompt focused exclusively on Bihari cuisine
-   - Maintains conversation history for contextual responses
-   - Politely redirects non-Bihari food queries
-
-2. **Database Integration**
-   - SQLite database (`food.db`) storing authentic Bihari dishes
-   - Structured data includes: dish name, description, ingredients, preparation methods, and regional information
-   - Function calling mechanism for LLM to query food details
-
-3. **Interactive Web UI**
-   - Built with Gradio for user-friendly chatbot interface
-   - Local deployment on `http://127.0.0.1:7860`
-   - Real-time chat with the Bihari cuisine assistant
-
-4. **LLM Function Calling**
-   - Implements OpenAI-compatible tool calling
-   - `get_bihari_food_details()` function allows the LLM to retrieve specific dish information
-   - Enables context-aware responses with accurate data
 
 ### 📁 Project Structure
 
