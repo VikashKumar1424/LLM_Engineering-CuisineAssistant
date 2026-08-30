@@ -16,14 +16,14 @@ This repository showcases LLM (Large Language Model) engineering practices and c
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        User Interface Layer                       │
-│                   (Gradio Web Interface)                          │
-│              http://127.0.0.1:7860                                │
+│                        User Interface Layer                     │
+│                   (Gradio Web Interface)                        │
+│              http://127.0.0.1:7860                              │
 └────────────────────────┬────────────────────────────────────────┘
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Application Logic Layer                        │
+│                    Application Logic Layer                      │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │           Chat Handler & Message Processing              │   │
 │  │  - Conversation History Management                       │   │
@@ -37,15 +37,15 @@ This repository showcases LLM (Large Language Model) engineering practices and c
 │   LLM Integration Layer  │  │   Database Layer         │
 │  (Google Gemini API)     │  │   (SQLite)               │
 │                          │  │                          │
-│ ┌──────────────────────┐ │  │ ┌────────────────────┐  │
-│ │ OpenAI-Compatible   │ │  │ │  bihari_food table │  │
-│ │ API Client          │ │  │ │                    │  │
-│ └──────────────────────┘ │  │ │ - dish             │  │
-│ ┌──────────────────────┐ │  │ │ - description      │  │
-│ │ Function Calling     │ │  │ │ - ingredients      │  │
-│ │ (Tool Execution)     │ │  │ │ - preparation      │  │
-│ └──────────────────────┘ │  │ │ - region           │  │
-└──────────────┬───────────┘  │ └────────────────────┘  │
+│ ┌──────────────────────┐ │  │ ┌────────────────────┐   │
+│ │ OpenAI-Compatible    │ │  │ │  bihari_food table │   │
+│ │ API Client           │ │  │ │                    │   │
+│ └──────────────────────┘ │  │ │ - dish             │   │
+│ ┌──────────────────────┐ │  │ │ - description      │   │
+│ │ Function Calling     │ │  │ │ - ingredients      │   │
+│ │ (Tool Execution)     │ │  │ │ - preparation      │   │
+│ └──────────────────────┘ │  │ │ - region           │   │
+└──────────────┬───────────┘  │ └────────────────────┘   │
                │              └──────────────┬───────────┘
                │                             │
                └─────────────────┬───────────┘
@@ -140,21 +140,21 @@ This repository showcases LLM (Large Language Model) engineering practices and c
        │
        ▼
 ┌─────────────────────────────────────────┐
-│        Core Dependencies                 │
+│        Core Dependencies                │
 ├─────────────────────────────────────────┤
-│ - Gradio (>=6.26.0)      → UI/UX       │
-│ - OpenAI (>=3.6.0)       → LLM Client  │
-│ - python-dotenv (>=1.2.3)→ Env Config  │
-│ - ipykernel (>=7.3.0)    → Notebook    │
-│ - sqlite3                → Database    │
-│ - requests               → HTTP Calls  │
+│ - Gradio (>=6.26.0)      → UI/UX        │
+│ - OpenAI (>=3.6.0)       → LLM Client   │
+│ - python-dotenv (>=1.2.3)→ Env Config   │
+│ - ipykernel (>=7.3.0)    → Notebook     │
+│ - sqlite3                → Database     │
+│ - requests               → HTTP Calls   │
 └─────────────────────────────────────────┘
        │
        ▼
 ┌──────────────────────────────────────────┐
 │    External APIs & Services              │
 ├──────────────────────────────────────────┤
-│ Google Gemini API (OpenAI compatible)   │
+│ Google Gemini API (OpenAI compatible)    │
 │ Authentication: API Key via .env         │
 │ Base URL: generativelanguage.googleapis  │
 └──────────────────────────────────────────┘
