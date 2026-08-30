@@ -1,0 +1,7 @@
+- name: Run tests
+  run: |
+    if find tests -name "test_*.py" -o -name "*_test.py" | grep -q .; then
+      pytest
+    else
+      echo "No tests found - skipping pytest"
+    fi
